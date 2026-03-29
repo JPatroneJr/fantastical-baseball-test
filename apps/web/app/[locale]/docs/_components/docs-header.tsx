@@ -19,7 +19,7 @@ export function DocsHeader() {
             <Separator orientation="vertical" />
 
             <Link
-              href="/help"
+              href="/documentation"
               className="font-semibold tracking-tight hover:underline"
             >
               <Trans i18nKey="marketing.documentation" />
