@@ -1,19 +1,19 @@
-import type { Stripe } from "stripe";
-import * as z from "zod";
+import type { Stripe } from 'stripe';
+import * as z from 'zod';
 
-import type { CreateBillingCheckoutSchema } from "@kit/billing/schema";
+import type { CreateBillingCheckoutSchema } from '@kit/billing/schema';
 
 /**
  * @description If set to true, users can start a trial without entering their credit card details
  */
 const enableTrialWithoutCreditCard =
-  process.env.STRIPE_ENABLE_TRIAL_WITHOUT_CC === "true";
+  process.env.STRIPE_ENABLE_TRIAL_WITHOUT_CC === 'true';
 
-const UI_MODE_VALUES = ["embedded_page", "hosted_page"] as const;
+const UI_MODE_VALUES = ['embedded_page', 'hosted_page'] as const;
 
 const uiMode = z
   .enum(UI_MODE_VALUES)
-  .default("embedded_page")
+  .default('embedded_page')
   .parse(process.env.STRIPE_UI_MODE);
 
 /**
@@ -37,9 +37,9 @@ export async function createStripeCheckout(
 
   // docs: https://stripe.com/docs/billing/subscriptions/build-subscription
   const mode: Stripe.Checkout.SessionCreateParams.Mode =
-    params.plan.paymentType === "recurring" ? "subscription" : "payment";
+    params.plan.paymentType === 'recurring' ? 'subscription' : 'payment';
 
-  const isSubscription = mode === "subscription";
+  const isSubscription = mode === 'subscription';
 
   let trialDays: number | null | undefined = params.plan.trialDays;
 
@@ -53,7 +53,7 @@ export async function createStripeCheckout(
       ? {
           trial_settings: {
             end_behavior: {
-              missing_payment_method: "cancel" as const,
+              missing_payment_method: 'cancel' as const,
             },
           },
         }
@@ -89,10 +89,10 @@ export async function createStripeCheckout(
   const customerCreation =
     isSubscription || customer
       ? ({} as Record<string, string>)
-      : { customer_creation: "always" };
+      : { customer_creation: 'always' };
 
   const lineItems = params.plan.lineItems.map((item) => {
-    if (item.type === "metered") {
+    if (item.type === 'metered') {
       return {
         price: item.id,
       };
@@ -114,7 +114,7 @@ export async function createStripeCheckout(
   const paymentCollectionMethod =
     enableTrialWithoutCreditCard && params.plan.trialDays
       ? {
-          payment_method_collection: "if_required" as const,
+          payment_method_collection: 'if_required' as const,
         }
       : {};
 
@@ -138,7 +138,7 @@ function getUrls(params: {
 }) {
   const url = `${params.returnUrl}?session_id={CHECKOUT_SESSION_ID}`;
 
-  if (params.uiMode === "hosted_page") {
+  if (params.uiMode === 'hosted_page') {
     return {
       success_url: url,
       cancel_url: params.returnUrl,

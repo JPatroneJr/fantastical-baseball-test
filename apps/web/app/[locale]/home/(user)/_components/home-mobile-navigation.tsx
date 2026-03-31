@@ -1,15 +1,12 @@
 'use client';
 
-import Link from 'next/link';
-
-import { LogOut, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 
 import { useSignOut } from '@kit/supabase/hooks/use-sign-out';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -17,6 +14,10 @@ import {
 import { If } from '@kit/ui/if';
 import { Trans } from '@kit/ui/trans';
 
+import {
+  MobileNavRouteLinks,
+  MobileNavSignOutItem,
+} from '~/components/mobile-navigation-shared';
 import featuresFlagConfig from '~/config/feature-flags.config';
 import { personalAccountNavigationConfig } from '~/config/personal-account-navigation.config';
 
@@ -26,25 +27,6 @@ import type { UserWorkspace } from '../_lib/server/load-user-workspace';
 
 export function HomeMobileNavigation(props: { workspace: UserWorkspace }) {
   const signOut = useSignOut();
-
-  const Links = personalAccountNavigationConfig.routes.map((item, index) => {
-    if ('children' in item) {
-      return item.children.map((child) => {
-        return (
-          <DropdownLink
-            key={child.path}
-            Icon={child.Icon}
-            path={child.path}
-            label={child.label}
-          />
-        );
-      });
-    }
-
-    if ('divider' in item) {
-      return <DropdownMenuSeparator key={index} />;
-    }
-  });
 
   return (
     <DropdownMenu>
@@ -60,6 +42,7 @@ export function HomeMobileNavigation(props: { workspace: UserWorkspace }) {
             </DropdownMenuLabel>
 
             <HomeAccountSelector
+              collapsed={false}
               userId={props.workspace.user.id}
               accounts={props.workspace.accounts}
             />
@@ -68,57 +51,16 @@ export function HomeMobileNavigation(props: { workspace: UserWorkspace }) {
           <DropdownMenuSeparator />
         </If>
 
-        <DropdownMenuGroup>{Links}</DropdownMenuGroup>
+        <DropdownMenuGroup>
+          <MobileNavRouteLinks
+            routes={personalAccountNavigationConfig.routes}
+          />
+        </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
 
-        <SignOutDropdownItem onSignOut={() => signOut.mutateAsync()} />
+        <MobileNavSignOutItem onSignOut={() => signOut.mutateAsync()} />
       </DropdownMenuContent>
     </DropdownMenu>
-  );
-}
-
-function DropdownLink(
-  props: React.PropsWithChildren<{
-    path: string;
-    label: string;
-    Icon: React.ReactNode;
-  }>,
-) {
-  return (
-    <DropdownMenuItem
-      render={
-        <Link
-          href={props.path}
-          className={'flex h-12 w-full items-center space-x-4'}
-        >
-          {props.Icon}
-
-          <span>
-            <Trans i18nKey={props.label} defaults={props.label} />
-          </span>
-        </Link>
-      }
-      key={props.path}
-    />
-  );
-}
-
-function SignOutDropdownItem(
-  props: React.PropsWithChildren<{
-    onSignOut: () => unknown;
-  }>,
-) {
-  return (
-    <DropdownMenuItem
-      className={'flex h-12 w-full items-center space-x-4'}
-      onClick={props.onSignOut}
-    >
-      <LogOut className={'h-6'} />
-
-      <span>
-        <Trans i18nKey={'common.signOut'} defaults={'Sign out'} />
-      </span>
-    </DropdownMenuItem>
   );
 }

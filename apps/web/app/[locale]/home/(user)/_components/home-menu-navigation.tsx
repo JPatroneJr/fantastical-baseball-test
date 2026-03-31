@@ -39,7 +39,9 @@ export function HomeMenuNavigation(props: { workspace: UserWorkspace }) {
   return (
     <div className={'flex w-full flex-1 justify-between'}>
       <div className={'flex items-center space-x-8'}>
-        <AppLogo />
+        <div>
+          <AppLogo />
+        </div>
 
         <BorderedNavigationMenu>
           {routes.map((route) => (
@@ -54,7 +56,9 @@ export function HomeMenuNavigation(props: { workspace: UserWorkspace }) {
         </If>
 
         <If condition={featuresFlagConfig.enableTeamAccounts}>
-          <HomeAccountSelector userId={user.id} accounts={accounts} />
+          <div>
+            <HomeAccountSelector userId={user.id} accounts={accounts} />
+          </div>
         </If>
 
         <div>

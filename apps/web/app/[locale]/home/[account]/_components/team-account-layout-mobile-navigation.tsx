@@ -1,28 +1,25 @@
 'use client';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { Home, LogOut, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 
 import { AccountSelector } from '@kit/accounts/account-selector';
 import { useSignOut } from '@kit/supabase/hooks/use-sign-out';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@kit/ui/dialog';
-import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@kit/ui/dropdown-menu';
 import { Trans } from '@kit/ui/trans';
 
+import {
+  MobileNavRouteLinks,
+  MobileNavSignOutItem,
+} from '~/components/mobile-navigation-shared';
 import featureFlagsConfig from '~/config/feature-flags.config';
 import pathsConfig from '~/config/paths.config';
 import { getTeamAccountSidebarConfig } from '~/config/team-account-navigation.config';
@@ -34,7 +31,6 @@ type Accounts = Array<{
 }>;
 
 const features = {
-  enableTeamAccounts: featureFlagsConfig.enableTeamAccounts,
   enableTeamCreation: featureFlagsConfig.enableTeamCreation,
 };
 
@@ -45,28 +41,8 @@ export const TeamAccountLayoutMobileNavigation = (
     accounts: Accounts;
   }>,
 ) => {
+  const router = useRouter();
   const signOut = useSignOut();
-
-  const Links = getTeamAccountSidebarConfig(props.account).routes.map(
-    (item, index) => {
-      if ('children' in item) {
-        return item.children.map((child) => {
-          return (
-            <DropdownLink
-              key={child.path}
-              Icon={child.Icon}
-              path={child.path}
-              label={child.label}
-            />
-          );
-        });
-      }
-
-      if ('divider' in item) {
-        return <DropdownMenuSeparator key={index} />;
-      }
-    },
-  );
 
   return (
     <DropdownMenu>
@@ -74,99 +50,12 @@ export const TeamAccountLayoutMobileNavigation = (
         <Menu className={'h-9'} />
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent sideOffset={10} className={'w-screen rounded-none'}>
-        <TeamAccountsModal
-          userId={props.userId}
-          accounts={props.accounts}
-          account={props.account}
-        />
-
-        {Links}
-
-        <DropdownMenuSeparator />
-
-        <SignOutDropdownItem onSignOut={() => signOut.mutateAsync()} />
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};
-
-function DropdownLink(
-  props: React.PropsWithChildren<{
-    path: string;
-    label: string;
-    Icon: React.ReactNode;
-  }>,
-) {
-  return (
-    <DropdownMenuItem
-      render={
-        <Link
-          href={props.path}
-          className={'flex h-12 w-full items-center gap-x-3 px-3'}
-        >
-          {props.Icon}
-
-          <span>
-            <Trans i18nKey={props.label} defaults={props.label} />
-          </span>
-        </Link>
-      }
-    />
-  );
-}
-
-function SignOutDropdownItem(
-  props: React.PropsWithChildren<{
-    onSignOut: () => unknown;
-  }>,
-) {
-  return (
-    <DropdownMenuItem
-      className={'flex h-12 w-full items-center space-x-2'}
-      onClick={props.onSignOut}
-    >
-      <LogOut className={'h-4'} />
-
-      <span>
-        <Trans i18nKey={'common.signOut'} />
-      </span>
-    </DropdownMenuItem>
-  );
-}
-
-function TeamAccountsModal(props: {
-  accounts: Accounts;
-  userId: string;
-  account: string;
-}) {
-  const router = useRouter();
-
-  return (
-    <Dialog>
-      <DialogTrigger
-        render={
-          <DropdownMenuItem
-            className={'flex h-12 w-full items-center space-x-2'}
-            onSelect={(e) => e.preventDefault()}
-          >
-            <Home className={'h-4'} />
-
-            <span>
-              <Trans i18nKey={'common.yourAccounts'} />
-            </span>
-          </DropdownMenuItem>
-        }
-      />
-
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>
+      <DropdownMenuContent className={'w-screen rounded-none'}>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>
             <Trans i18nKey={'common.yourAccounts'} />
-          </DialogTitle>
-        </DialogHeader>
+          </DropdownMenuLabel>
 
-        <div className={'py-6'}>
           <AccountSelector
             className={'w-full max-w-full'}
             userId={props.userId}
@@ -185,8 +74,20 @@ function TeamAccountsModal(props: {
               router.replace(path);
             }}
           />
-        </div>
-      </DialogContent>
-    </Dialog>
+        </DropdownMenuGroup>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuGroup>
+          <MobileNavRouteLinks
+            routes={getTeamAccountSidebarConfig(props.account).routes}
+          />
+        </DropdownMenuGroup>
+
+        <DropdownMenuSeparator />
+
+        <MobileNavSignOutItem onSignOut={() => signOut.mutateAsync()} />
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
-}
+};

@@ -60,7 +60,7 @@ export function PageMobileNavigation(
   return (
     <div
       className={cn(
-        'flex w-full items-center border-b px-4 py-2 lg:hidden lg:px-0',
+        'container flex w-full items-center justify-between px-0 py-2 group-data-[slot="sidebar-wrapper"]/sidebar-wrapper:border-b lg:hidden',
         props.className,
       )}
     >
@@ -73,30 +73,39 @@ function PageWithHeader(props: PageProps) {
   const { Navigation, Children, MobileNavigation } = getSlotsFromPage(props);
 
   return (
-    <div className={cn('flex h-screen flex-1 flex-col', props.className)}>
+    <div
+      className={cn(
+        'bg-background flex min-h-screen flex-1 flex-col',
+        props.className,
+      )}
+    >
       <div
-        className={
-          props.contentContainerClassName ?? 'flex flex-1 flex-col space-y-4'
-        }
+        className={props.contentContainerClassName ?? 'flex flex-1 flex-col'}
       >
         <div
           className={cn(
-            'bg-muted/40 dark:border-border dark:shadow-primary/10 flex h-14 items-center justify-between px-4 lg:justify-start lg:shadow-xs',
+            'bg-background/95 supports-[backdrop-filter]:bg-background/80 border-b',
             {
               'sticky top-0 z-10 backdrop-blur-md': props.sticky ?? true,
             },
           )}
         >
-          <div
-            className={'hidden w-full flex-1 items-center space-x-8 lg:flex'}
-          >
-            {Navigation}
-          </div>
+          <div className="container mx-auto flex h-14 w-full items-center">
+            <div
+              className={
+                'hidden w-full min-w-0 flex-1 items-center space-x-4 lg:flex lg:px-4'
+              }
+            >
+              {Navigation}
+            </div>
 
-          {MobileNavigation}
+            {MobileNavigation}
+          </div>
         </div>
 
-        <div className={'container flex flex-1 flex-col'}>{Children}</div>
+        <div className="container mx-auto flex w-full flex-1 flex-col">
+          {Children}
+        </div>
       </div>
     </div>
   );
@@ -113,7 +122,15 @@ export function PageBody(
 }
 
 export function PageNavigation(props: React.PropsWithChildren) {
-  return <div className={'bg-inherit'}>{props.children}</div>;
+  return (
+    <div
+      className={
+        'flex flex-1 flex-col bg-inherit group-data-[slot="sidebar-wrapper"]/sidebar-wrapper:flex-initial'
+      }
+    >
+      {props.children}
+    </div>
+  );
 }
 
 export function PageDescription(props: React.PropsWithChildren) {
@@ -147,16 +164,25 @@ export function PageHeader({
   title,
   description,
   className,
+  displaySidebarTrigger = true,
 }: React.PropsWithChildren<{
   className?: string;
   title?: string | React.ReactNode;
   description?: string | React.ReactNode;
+  displaySidebarTrigger?: boolean;
 }>) {
   return (
-    <div className={cn('flex items-center justify-between py-4', className)}>
-      <div className={'flex flex-col gap-y-2'}>
-        <div className="flex items-center gap-x-2.5">
-          <SidebarTrigger className="text-muted-foreground hover:text-secondary-foreground h-4.5 w-4.5 cursor-pointer" />
+    <div
+      className={cn(
+        'flex flex-col gap-4 py-4 sm:py-5 lg:flex-row lg:items-center lg:justify-between',
+        className,
+      )}
+    >
+      <div className={'flex min-w-0 flex-col gap-y-2'}>
+        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+          <If condition={displaySidebarTrigger}>
+            <SidebarTrigger className="text-muted-foreground hover:text-secondary-foreground h-4.5 w-4.5 cursor-pointer" />
+          </If>
 
           <If condition={description}>
             <Separator
@@ -173,7 +199,9 @@ export function PageHeader({
         </If>
       </div>
 
-      {children}
+      <div className="flex w-full flex-wrap items-center gap-2 lg:w-auto lg:justify-end">
+        {children}
+      </div>
     </div>
   );
 }

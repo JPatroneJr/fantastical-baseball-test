@@ -22,13 +22,15 @@ export function HomeAccountSelector(props: {
   }>;
 
   userId: string;
+  collapsed?: boolean;
 }) {
   const router = useRouter();
   const context = useContext(SidebarContext);
+  const collapsed = props.collapsed ?? !context?.open;
 
   return (
     <AccountSelector
-      collapsed={!context?.open}
+      collapsed={collapsed}
       accounts={props.accounts}
       features={features}
       userId={props.userId}

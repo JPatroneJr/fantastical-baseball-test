@@ -1,9 +1,11 @@
 'use client';
 
+import { useContext } from 'react';
+
 import { useRouter } from 'next/navigation';
 
 import { AccountSelector } from '@kit/accounts/account-selector';
-import { useSidebar } from '@kit/ui/sidebar';
+import { SidebarContext } from '@kit/ui/sidebar';
 
 import featureFlagsConfig from '~/config/feature-flags.config';
 import pathsConfig from '~/config/paths.config';
@@ -23,7 +25,7 @@ export function TeamAccountAccountsSelector(params: {
   }>;
 }) {
   const router = useRouter();
-  const ctx = useSidebar();
+  const ctx = useContext(SidebarContext);
 
   return (
     <AccountSelector

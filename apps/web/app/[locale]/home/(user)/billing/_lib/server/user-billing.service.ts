@@ -109,7 +109,7 @@ class UserBillingService {
           planId,
           customerId,
           accountId,
-          error: message
+          error: message,
         },
         `Checkout session not created due to an error`,
       );

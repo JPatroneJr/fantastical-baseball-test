@@ -67,10 +67,10 @@ async function SidebarLayout({
             />
           </PageNavigation>
 
-          <PageMobileNavigation className={'flex items-center justify-between'}>
+          <PageMobileNavigation>
             <AppLogo />
 
-            <div className={'flex space-x-4'}>
+            <div className={'flex'}>
               <TeamAccountLayoutMobileNavigation
                 userId={data.user.id}
                 accounts={accounts}
@@ -94,12 +94,32 @@ function HeaderLayout({
 }>) {
   const data = use(loadTeamWorkspace(account));
 
+  const accounts = data.accounts.map(({ name, slug, picture_url }) => ({
+    label: name,
+    value: slug,
+    image: picture_url,
+  }));
+
   return (
     <TeamAccountWorkspaceContextProvider value={data}>
       <Page style={'header'}>
         <PageNavigation>
           <TeamAccountNavigationMenu workspace={data} />
         </PageNavigation>
+
+        <PageMobileNavigation className={'flex items-center justify-between'}>
+          <div>
+            <AppLogo />
+          </div>
+
+          <div>
+            <TeamAccountLayoutMobileNavigation
+              userId={data.user.id}
+              accounts={accounts}
+              account={account}
+            />
+          </div>
+        </PageMobileNavigation>
 
         {children}
       </Page>

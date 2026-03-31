@@ -41,7 +41,9 @@ export function TeamAccountNavigationMenu(props: {
   return (
     <div className={'flex w-full flex-1 justify-between'}>
       <div className={'flex items-center space-x-8'}>
-        <AppLogo />
+        <div>
+          <AppLogo />
+        </div>
 
         <BorderedNavigationMenu>
           {routes.map((route) => (
@@ -50,20 +52,22 @@ export function TeamAccountNavigationMenu(props: {
         </BorderedNavigationMenu>
       </div>
 
-      <div className={'flex items-center justify-end space-x-2.5'}>
+      <div className={'flex items-center justify-end space-x-1'}>
         <If condition={featureFlagsConfig.enableNotifications}>
           <TeamAccountNotifications accountId={account.id} userId={user.id} />
         </If>
 
-        <TeamAccountAccountsSelector
-          userId={user.id}
-          selectedAccount={account.slug}
-          accounts={accounts.map((account) => ({
-            label: account.name,
-            value: account.slug,
-            image: account.picture_url,
-          }))}
-        />
+        <div>
+          <TeamAccountAccountsSelector
+            userId={user.id}
+            selectedAccount={account.slug}
+            accounts={accounts.map((account) => ({
+              label: account.name,
+              value: account.slug,
+              image: account.picture_url,
+            }))}
+          />
+        </div>
 
         <div>
           <ProfileAccountDropdownContainer

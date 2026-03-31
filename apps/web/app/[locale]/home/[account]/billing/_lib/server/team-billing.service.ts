@@ -131,7 +131,7 @@ class TeamBillingService {
       logger.error(
         {
           ...ctx,
-          error: message
+          error: message,
         },
         `Error creating the checkout session`,
       );
