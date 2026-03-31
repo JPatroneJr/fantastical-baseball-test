@@ -625,7 +625,8 @@ export const envVariables: EnvVariableModel[] = [
   {
     name: 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY',
     displayName: 'Stripe Publishable Key',
-    description: 'Your Stripe publishable key.',
+    description:
+      'Your Stripe publishable key. Required when using embedded checkout (default), optional when STRIPE_UI_MODE is set to hosted_page.',
     hint: `Ex. pk_test_123456789012345678901234`,
     category: 'Billing',
     type: 'string',
@@ -635,7 +636,13 @@ export const envVariables: EnvVariableModel[] = [
           variable: 'NEXT_PUBLIC_BILLING_PROVIDER',
           condition: (value) => value === 'stripe',
           message:
-            'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is required when NEXT_PUBLIC_BILLING_PROVIDER is set to "stripe"',
+            'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is required when NEXT_PUBLIC_BILLING_PROVIDER is set to "stripe" and STRIPE_UI_MODE is not "hosted_page"',
+        },
+        {
+          variable: 'STRIPE_UI_MODE',
+          condition: (value) => value !== 'hosted_page',
+          message:
+            'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is required when STRIPE_UI_MODE is not set to "hosted_page"',
         },
       ],
       validate: ({ value }) => {
@@ -1389,6 +1396,21 @@ export const envVariables: EnvVariableModel[] = [
     type: 'boolean',
     validate: ({ value }) => {
       return z.coerce.boolean().optional().safeParse(value);
+    },
+  },
+  {
+    name: 'STRIPE_UI_MODE',
+    displayName: 'Stripe Checkout UI Mode',
+    description:
+      'Controls whether Stripe Checkout uses an embedded page or a hosted page. Defaults to embedded_page.',
+    category: 'Billing',
+    type: 'enum',
+    values: ['embedded_page', 'hosted_page'],
+    validate: ({ value }) => {
+      return z
+        .enum(['embedded_page', 'hosted_page'])
+        .optional()
+        .safeParse(value);
     },
   },
   {

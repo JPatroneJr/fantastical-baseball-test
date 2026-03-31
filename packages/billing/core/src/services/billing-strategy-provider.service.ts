@@ -33,7 +33,8 @@ export abstract class BillingStrategyProviderService {
   abstract createCheckoutSession(
     params: z.output<typeof CreateBillingCheckoutSchema>,
   ): Promise<{
-    checkoutToken: string;
+    checkoutToken: string | null;
+    url?: string | null;
   }>;
 
   abstract cancelSubscription(

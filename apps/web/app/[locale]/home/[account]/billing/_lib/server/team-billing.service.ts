@@ -1,4 +1,6 @@
 import 'server-only';
+import { redirect } from 'next/navigation';
+
 import { SupabaseClient } from '@supabase/supabase-js';
 
 import * as z from 'zod';
@@ -106,9 +108,12 @@ class TeamBillingService {
       `Creating checkout session...`,
     );
 
+    let checkoutToken: string | null = null;
+    let url: string | null | undefined;
+
     try {
       // call the payment gateway to create the checkout session
-      const { checkoutToken } = await service.createCheckoutSession({
+      const checkout = await service.createCheckoutSession({
         accountId,
         plan,
         returnUrl,
@@ -118,22 +123,37 @@ class TeamBillingService {
         enableDiscountField: product.enableDiscountField,
       });
 
-      // return the checkout token to the client
-      // so we can call the payment gateway to complete the checkout
-      return {
-        checkoutToken,
-      };
+      checkoutToken = checkout.checkoutToken;
+      url = checkout.url;
     } catch (error) {
+      const message = Error.isError(error) ? error.message : error;
+
       logger.error(
         {
           ...ctx,
-          error,
+          error: message
         },
         `Error creating the checkout session`,
       );
 
       throw new Error(`Checkout not created`, { cause: error });
     }
+
+    // if URL provided, we redirect to the provider's hosted page
+    if (url) {
+      logger.info(
+        ctx,
+        `Checkout session created. Redirecting to hosted page...`,
+      );
+
+      redirect(url);
+    }
+
+    // return the checkout token to the client
+    // so we can call the payment gateway to complete the checkout
+    return {
+      checkoutToken,
+    };
   }
 
   /**

@@ -16,7 +16,7 @@ const { publishableKey } = StripeClientEnvSchema.parse({
   publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
 });
 
-const stripePromise = loadStripe(publishableKey);
+const stripePromise = loadStripe(publishableKey as string);
 
 export function StripeCheckout({
   checkoutToken,
