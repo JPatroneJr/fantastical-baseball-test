@@ -62,15 +62,11 @@ function LastAuthMethodHintImpl({ className }: LastAuthMethodHintProps) {
 
       <span>
         <Trans i18nKey="auth.lastUsedMethodPrefix" />{' '}
+
         <If condition={isOAuth && Boolean(providerName)}>
-          <Trans
-            i18nKey="auth.methodOauthWithProvider"
-            values={{ provider: providerName }}
-            components={{
-              provider: <span className="text-muted-foreground font-medium" />,
-            }}
-          />
+          {providerName}
         </If>
+
         <If condition={!isOAuth || !providerName}>
           <span className="text-muted-foreground font-medium">
             <Trans i18nKey={methodKey} />
