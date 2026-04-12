@@ -36,7 +36,7 @@ export async function createStripeCheckout(
   const customer = params.customerId ?? undefined;
 
   // docs: https://stripe.com/docs/billing/subscriptions/build-subscription
-  const mode: Stripe.Checkout.SessionCreateParams.Mode =
+  const mode: Stripe.Checkout.SessionCreateParams['mode'] =
     params.plan.paymentType === 'recurring' ? 'subscription' : 'payment';
 
   const isSubscription = mode === 'subscription';
@@ -61,7 +61,7 @@ export async function createStripeCheckout(
 
   // this should only be set if the mode is 'subscription'
   const subscriptionData:
-    | Stripe.Checkout.SessionCreateParams.SubscriptionData
+    | Stripe.Checkout.SessionCreateParams['subscription_data']
     | undefined = isSubscription
     ? {
         trial_period_days: trialDays,

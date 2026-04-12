@@ -3,14 +3,12 @@
 import * as React from 'react';
 
 import * as RechartsPrimitive from 'recharts';
-import type { LegendPayload } from 'recharts/types/component/DefaultLegendContent';
-import {
-  NameType,
-  Payload,
-  ValueType,
-} from 'recharts/types/component/DefaultTooltipContent';
+import type {
+  LegendPayload,
+  TooltipContentProps,
+  TooltipPayloadEntry,
+} from 'recharts';
 import type { Props as LegendProps } from 'recharts/types/component/Legend';
-import { TooltipContentProps } from 'recharts/types/component/Tooltip';
 
 import { cn } from '@kit/ui/utils';
 
@@ -31,7 +29,7 @@ type ChartContextProps = {
   config: ChartConfig;
 };
 
-export type CustomTooltipProps = TooltipContentProps<ValueType, NameType> & {
+export type CustomTooltipProps = TooltipContentProps & {
   className?: string;
   hideLabel?: boolean;
   hideIndicator?: boolean;
@@ -39,15 +37,15 @@ export type CustomTooltipProps = TooltipContentProps<ValueType, NameType> & {
   nameKey?: string;
   labelKey?: string;
   labelFormatter?: (
-    label: TooltipContentProps<number, string>['label'],
-    payload: TooltipContentProps<number, string>['payload'],
+    label: TooltipContentProps['label'],
+    payload: TooltipContentProps['payload'],
   ) => React.ReactNode;
   formatter?: (
     value: number | string,
     name: string,
-    item: Payload<number | string, string>,
+    item: TooltipPayloadEntry,
     index: number,
-    payload: ReadonlyArray<Payload<number | string, string>>,
+    payload: ReadonlyArray<TooltipPayloadEntry>,
   ) => React.ReactNode;
   labelClassName?: string;
   color?: string;
@@ -222,7 +220,7 @@ function ChartTooltipContent({
 
           return (
             <div
-              key={item.dataKey}
+              key={item.dataKey as string}
               className={cn(
                 '[&>svg]:text-muted-foreground flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5',
                 indicator === 'dot' && 'items-center',
