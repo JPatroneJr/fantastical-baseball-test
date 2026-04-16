@@ -416,7 +416,7 @@ export const envVariables: EnvVariableModel[] = [
     },
   },
   {
-    name: 'NEXT_PUBLIC_ENABLE_TEAMS_ACCOUNTS_ONLY',
+    name: 'NEXT_PUBLIC_ENABLE_TEAM_ACCOUNTS_ONLY',
     displayName: 'Enable Teams Accounts Only',
     description:
       'When enabled, disables personal accounts and only allows team accounts.',

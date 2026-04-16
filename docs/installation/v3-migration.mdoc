@@ -926,7 +926,7 @@ last selected team in a cookie.
    work with the teams-only redirect logic.
 
 Run `pnpm typecheck` to verify. No action needed unless I plan
-to enable `NEXT_PUBLIC_ENABLE_TEAMS_ACCOUNTS_ONLY=true`.
+to enable `NEXT_PUBLIC_ENABLE_TEAM_ACCOUNTS_ONLY=true`.
 ```
 
 New feature flag for apps that only use team accounts (no personal accounts).
@@ -935,13 +935,13 @@ New feature flag for apps that only use team accounts (no personal accounts).
 
 ```typescript
 // apps/web/config/feature-flags.config.ts
-enableTeamsOnly: import.meta.env.NEXT_PUBLIC_ENABLE_TEAMS_ACCOUNTS_ONLY === 'true',
+enableTeamsOnly: import.meta.env.NEXT_PUBLIC_ENABLE_TEAM_ACCOUNTS_ONLY === 'true',
 ```
 
 ### New Env Variable
 
 ```
-NEXT_PUBLIC_ENABLE_TEAMS_ACCOUNTS_ONLY=false
+NEXT_PUBLIC_ENABLE_TEAM_ACCOUNTS_ONLY=false
 ```
 
 Set to `true` if your app should skip personal accounts entirely.
