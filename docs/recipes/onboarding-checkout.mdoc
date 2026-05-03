@@ -432,7 +432,10 @@ export const submitOnboardingFormAction = authActionClient
 
     logger.info({ userId: user.id }, `Submitting onboarding form...`);
 
-    const isOnboarded = user.app_metadata.onboarded === true;
+    const client = getSupabaseServerClient();
+
+    const { data: claimsData } = await client.auth.getClaims();
+    const isOnboarded = claimsData?.claims.app_metadata?.onboarded === true;
 
     if (isOnboarded) {
       logger.info(
@@ -442,8 +445,6 @@ export const submitOnboardingFormAction = authActionClient
 
       redirect(pathsConfig.app.home);
     }
-
-    const client = getSupabaseServerClient();
 
     const createTeamResponse = await client
       .from('accounts')
