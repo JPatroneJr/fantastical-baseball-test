@@ -28,7 +28,7 @@ const links = {
   SignIn: {
     label: 'auth.signIn',
     path: '/auth/sign-in',
-    showOn: 'mobile'
+    showOn: 'mobile',
   },
   SignUp: {
     label: 'auth.signUp',
@@ -39,15 +39,17 @@ const links = {
 };
 
 export function SiteNavigation() {
-  const NavItems = Object.values(links).map((item) => {
-    if ('showOn' in item && item.showOn === 'mobile') return null;
+  const NavItems = Object.values(links)
+    .map((item) => {
+      if ('showOn' in item && item.showOn === 'mobile') return null;
 
-    return (
-      <SiteNavigationItem key={item.path} path={item.path}>
-        <Trans i18nKey={item.label} />
-      </SiteNavigationItem>
-    );
-  }).filter(Boolean);
+      return (
+        <SiteNavigationItem key={item.path} path={item.path}>
+          <Trans i18nKey={item.label} />
+        </SiteNavigationItem>
+      );
+    })
+    .filter(Boolean);
 
   return (
     <>
