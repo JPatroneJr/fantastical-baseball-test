@@ -1,27 +1,17 @@
-import { Inter as SansFont } from 'next/font/google';
-
 import { cn } from '@kit/ui/utils';
 
 /**
- * @sans
- * @description Define here the sans font.
- * By default, it uses the Inter font from Google Fonts.
+ * Keep font variables local so production builds do not depend on fetching
+ * Google Fonts during `next build`.
  */
-const sans = SansFont({
-  subsets: ['latin'],
-  variable: '--font-sans-fallback',
-  fallback: ['system-ui', 'Helvetica Neue', 'Helvetica', 'Arial'],
-  preload: true,
-  weight: ['300', '400', '500', '600', '700'],
-});
+const sans = {
+  variable: 'font-sans',
+};
 
-/**
- * @heading
- * @description Define here the heading font.
- */
-const heading = sans;
+const heading = {
+  variable: 'font-heading',
+};
 
-// we export these fonts into the root layout
 export { sans, heading };
 
 /**
@@ -32,15 +22,7 @@ export { sans, heading };
 export function getFontsClassName(theme?: string) {
   const dark = theme === 'dark';
   const light = !dark;
-
-  const font = [sans.variable, heading.variable].reduce<string[]>(
-    (acc, curr) => {
-      if (acc.includes(curr)) return acc;
-
-      return [...acc, curr];
-    },
-    [],
-  );
+  const font = [sans.variable, heading.variable];
 
   return cn(...font, {
     dark,

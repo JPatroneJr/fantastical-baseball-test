@@ -56,15 +56,39 @@ const AppConfigSchema = z
   );
 
 const appConfig = AppConfigSchema.parse({
-  name: process.env.NEXT_PUBLIC_PRODUCT_NAME,
-  title: process.env.NEXT_PUBLIC_SITE_TITLE,
-  description: process.env.NEXT_PUBLIC_SITE_DESCRIPTION,
-  url: process.env.NEXT_PUBLIC_SITE_URL,
+  name: process.env.NEXT_PUBLIC_PRODUCT_NAME ?? 'Fantastical Baseball',
+  title:
+    process.env.NEXT_PUBLIC_SITE_TITLE ??
+    'Fantastical Baseball - Office Mode Simulator',
+  description:
+    process.env.NEXT_PUBLIC_SITE_DESCRIPTION ??
+    'A fantasy baseball simulator disguised as a familiar office workbook.',
+  url: getSiteUrl(),
   locale: process.env.NEXT_PUBLIC_DEFAULT_LOCALE,
-  theme: process.env.NEXT_PUBLIC_DEFAULT_THEME_MODE,
-  themeColor: process.env.NEXT_PUBLIC_THEME_COLOR,
-  themeColorDark: process.env.NEXT_PUBLIC_THEME_COLOR_DARK,
+  theme: process.env.NEXT_PUBLIC_DEFAULT_THEME_MODE ?? 'light',
+  themeColor: process.env.NEXT_PUBLIC_THEME_COLOR ?? '#ffffff',
+  themeColorDark: process.env.NEXT_PUBLIC_THEME_COLOR_DARK ?? '#0a0a0a',
   production,
 });
 
 export default appConfig;
+
+function getSiteUrl() {
+  const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const vercelUrl =
+    process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
+
+  if (production && vercelUrl) {
+    return withHttps(vercelUrl);
+  }
+
+  return configuredUrl ?? 'https://fantastical-baseball-test.vercel.app';
+}
+
+function withHttps(url: string) {
+  if (url.startsWith('https://')) {
+    return url;
+  }
+
+  return `https://${url.replace(/^http:\/\//, '')}`;
+}
