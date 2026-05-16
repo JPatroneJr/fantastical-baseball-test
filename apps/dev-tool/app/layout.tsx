@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 
+import { Analytics } from '@vercel/analytics/next';
 import { getMessages } from 'next-intl/server';
 
 import { DevToolLayout } from '@/components/app-layout';
@@ -24,6 +25,7 @@ export default async function RootLayout({
         <RootProviders messages={messages}>
           <DevToolLayout>{children}</DevToolLayout>
         </RootProviders>
+        <Analytics />
       </body>
     </html>
   );
