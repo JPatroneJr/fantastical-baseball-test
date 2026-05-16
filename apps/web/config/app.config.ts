@@ -82,7 +82,11 @@ function getSiteUrl() {
     return withHttps(vercelUrl);
   }
 
-  return configuredUrl ?? 'https://fantastical-baseball-test.vercel.app';
+  if (production && (!configuredUrl || configuredUrl.startsWith('http:'))) {
+    return 'https://fantastical-baseball-test.vercel.app';
+  }
+
+  return configuredUrl ?? 'http://localhost:3000';
 }
 
 function withHttps(url: string) {
