@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "build": "cd ../.. && pnpm build && cd apps/dev-tool && rm -rf .next && cp -R ../web/.next .next",
     "clean": "git clean -xdf .next .turbo node_modules",
     "dev": "next dev --port=3010 | pino-pretty -c"
   },
