@@ -12,6 +12,7 @@
     "dev": "next dev | pino-pretty -c",
     "start": "next start",
     "start:test": "NODE_ENV=test next start",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "supabase": "supabase",
     "supabase:start": "supabase status || supabase start",
@@ -83,7 +84,8 @@
     "pino-pretty": "catalog:",
     "supabase": "catalog:",
     "tailwindcss": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "browserslist": [
     "last 1 versions",
