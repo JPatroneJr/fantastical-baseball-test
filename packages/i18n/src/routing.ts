@@ -11,9 +11,9 @@ export const routing = defineRouting({
   // Default locale (no prefix in URL)
   defaultLocale,
 
-  // Default locale has no prefix, other locales do
-  // Example: /about (en), /es/about (es), /fr/about (fr)
-  localePrefix: 'as-needed',
+  // Keep a stable locale prefix in development and production.
+  // This prevents single-locale middleware from issuing a self-redirect at `/`.
+  localePrefix: 'always',
 
   // Enable automatic locale detection based on browser headers and cookies
   localeDetection: true,
