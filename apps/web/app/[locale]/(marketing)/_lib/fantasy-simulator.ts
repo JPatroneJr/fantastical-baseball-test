@@ -333,7 +333,11 @@ function applyOutcome(
   return recordOut(game);
 }
 
-function advanceBatter(game: GameState, batter: Player, bases: 1 | 2 | 3 | 4) {
+function advanceBatter(
+  game: GameState,
+  batter: Player,
+  bases: 1 | 2 | 3 | 4,
+): GameState {
   const runners = [
     { player: game.bases.third, base: 3 },
     { player: game.bases.second, base: 2 },
@@ -371,7 +375,7 @@ function advanceBatter(game: GameState, batter: Player, bases: 1 | 2 | 3 | 4) {
   });
 }
 
-function recordOut(game: GameState) {
+function recordOut(game: GameState): GameState {
   const outs = game.outs + 1;
 
   if (outs < 3) {
@@ -426,7 +430,7 @@ function switchSides(game: GameState): GameState {
   };
 }
 
-function completePlateAppearance(game: GameState) {
+function completePlateAppearance(game: GameState): GameState {
   return {
     ...game,
     count: {

@@ -50,7 +50,7 @@ const seedTeams: Team[] = [
   {
     id: 'formula-foxes',
     name: 'Formula Foxes',
-    color: '#217346',
+    color: '#d83b01',
     roster: [
       player('Maddox Vail', 'CF', 88, 64, 92, 40),
       player('Elena Cross', 'SS', 84, 71, 77, 38),
@@ -272,7 +272,7 @@ export function FantasyBaseballWorkbook() {
             <button
               className={`h-8 border-b-2 px-3 ${
                 tab === 'Home'
-                  ? 'border-[#217346] text-[#217346]'
+                  ? 'border-[#d83b01] text-[#d83b01]'
                   : 'border-transparent text-[#605e5c] hover:text-[#252423]'
               }`}
               key={tab}
@@ -315,7 +315,7 @@ export function FantasyBaseballWorkbook() {
                     <button
                       className={`flex items-center justify-between rounded-sm border px-2 py-2 text-left text-sm ${
                         selectedTeam.id === team.id
-                          ? 'border-[#217346] bg-[#e7f2e8]'
+                          ? 'border-[#d83b01] bg-[#fff4ec]'
                           : 'border-transparent hover:border-[#d0d0d0] hover:bg-white'
                       }`}
                       key={team.id}
@@ -397,7 +397,7 @@ export function FantasyBaseballWorkbook() {
                   teams={teams}
                 />
                 <button
-                  className="self-end rounded-sm border border-[#217346] bg-[#217346] px-3 py-2 text-sm font-medium text-white hover:bg-[#1b5f39]"
+                  className="self-end rounded-sm border border-[#d83b01] bg-[#d83b01] px-3 py-2 text-sm font-medium text-white hover:bg-[#a92b00]"
                   onClick={performTrade}
                   type="button"
                 >
@@ -541,7 +541,7 @@ export function FantasyBaseballWorkbook() {
 
 function OfficeTitleBar() {
   return (
-    <header className="flex min-h-11 items-center justify-between bg-[#217346] px-3 text-white">
+    <header className="flex min-h-11 items-center justify-between bg-[#d83b01] px-3 text-white">
       <div className="flex min-w-0 items-center gap-3">
         <div className="grid size-7 place-items-center rounded-sm bg-white/15">
           <Table2 className="size-4" />
@@ -573,13 +573,13 @@ function RibbonButton({
     <button
       className={`flex h-14 w-[76px] flex-col items-center justify-center gap-1 rounded-sm border text-xs ${
         active
-          ? 'border-[#bad80a] bg-[#eef7ee]'
+          ? 'border-[#f7630c] bg-[#fff4ec]'
           : 'border-transparent hover:border-[#d0d0d0] hover:bg-[#f8f8f8]'
       }`}
       onClick={onClick}
       type="button"
     >
-      <span className="text-[#217346] [&_svg]:size-4">{icon}</span>
+      <span className="text-[#d83b01] [&_svg]:size-4">{icon}</span>
       <span className="truncate">{label}</span>
     </button>
   );
@@ -618,7 +618,7 @@ function Input({
 }) {
   return (
     <input
-      className="h-8 min-w-0 rounded-sm border border-[#a19f9d] bg-white px-2 text-sm outline-none focus:border-[#217346] focus:ring-1 focus:ring-[#217346]"
+      className="h-8 min-w-0 rounded-sm border border-[#a19f9d] bg-white px-2 text-sm outline-none focus:border-[#d83b01] focus:ring-1 focus:ring-[#d83b01]"
       onChange={(event) => onChange(event.target.value)}
       placeholder={placeholder}
       value={value}
@@ -637,7 +637,7 @@ function ActionButton({
 }) {
   return (
     <button
-      className="inline-flex h-8 items-center justify-center gap-1.5 rounded-sm border border-[#217346] bg-white px-2.5 text-sm font-medium text-[#217346] hover:bg-[#e7f2e8]"
+      className="inline-flex h-8 items-center justify-center gap-1.5 rounded-sm border border-[#d83b01] bg-white px-2.5 text-sm font-medium text-[#d83b01] hover:bg-[#fff4ec]"
       onClick={onClick}
       type="button"
     >
@@ -664,7 +664,7 @@ function RosterGrid({ team }: { team: Team }) {
         </thead>
         <tbody>
           {team.roster.map((rosterPlayer, index) => (
-            <tr className="hover:bg-[#eef7ee]" key={rosterPlayer.id}>
+            <tr className="hover:bg-[#fff4ec]" key={rosterPlayer.id}>
               <td className="border border-[#edebe9] bg-[#f8f8f8] px-2 py-1 font-mono text-xs text-[#605e5c]">
                 {index + 1}
               </td>
@@ -696,7 +696,7 @@ function RatingCell({ value }: { value: number }) {
         <span className="w-7 font-mono text-xs">{value}</span>
         <span className="h-1.5 flex-1 rounded-full bg-[#edebe9]">
           <span
-            className="block h-full rounded-full bg-[#217346]"
+            className="block h-full rounded-full bg-[#d83b01]"
             style={{ width: `${value}%` }}
           />
         </span>
@@ -821,7 +821,7 @@ function Base({
   return (
     <span
       className={`absolute size-5 border border-[#a19f9d] ${
-        occupied ? 'bg-[#217346]' : home ? 'bg-[#2b579a]' : 'bg-white'
+        occupied ? 'bg-[#d83b01]' : home ? 'bg-[#2b579a]' : 'bg-white'
       } ${className}`}
     />
   );
@@ -856,7 +856,7 @@ function playerValue(rosterPlayer: Player) {
 }
 
 function pickTeamColor(index: number) {
-  return ['#217346', '#185abd', '#c43e1c', '#8764b8', '#b7472a'][index % 5]!;
+  return ['#d83b01', '#185abd', '#c43e1c', '#8764b8', '#b7472a'][index % 5]!;
 }
 
 function loadState(): PersistedState {
